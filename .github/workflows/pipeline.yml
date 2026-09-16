@@ -1,0 +1,32 @@
+name: Salesforce CI Pipeline
+
+# This tells GitHub to run the workflow every time you push to the 'main' branch
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  validate-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Download your code from GitHub into the virtual runner machine
+      - name: "Checkout source code"
+        uses: actions/checkout@v4
+
+      # Step 2: Install Node.js (needed to run the Salesforce CLI)
+      - name: "Setup Node.js"
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Step 3: Install the official Salesforce CLI
+      - name: "Install Salesforce CLI"
+        run: |
+          npm install @salesforce/cli --global
+          sf --version
+
+      # Step 4: Verify your project structure
+      - name: "Check project structure"
+        run: |
+          ls -la
